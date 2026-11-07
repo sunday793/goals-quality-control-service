@@ -123,3 +123,12 @@
 - **Решение:** создала DTO `KkdIssueDto` и добавила `@JsonIgnore` на ленивую связь `run` в сущности `KkdIssue`. Теперь API возвращает чистый JSON в нужном формате.
 
 **Причина правок:** изоляция слоя API от слоя данных (best practice), предотвращение ошибок ленивой загрузки Hibernate.
+
+### Шаг 10. Обработка ошибок (Global Exception Handler)
+**Задача ассистенту:** реализовать единый формат ошибок для API. Неизвестный прогон/подразделение — 404, некорректные параметры — 422. Формат: `{"error": {"code": "...", "message": "..."}}`.
+
+**Принято как есть:**
+- структура `GlobalExceptionHandler` с `@RestControllerAdvice`
+- обработка `IllegalArgumentException` (404) и `MethodArgumentTypeMismatchException` (422)
+
+**Проверено:** 404 для несуществующего `run_id` и 422 для `limit=abc` работают корректно.
