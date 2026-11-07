@@ -5,5 +5,5 @@ import java.util.List;
 public interface KkdRule {
     String getCode();
     String getSeverity();
-    List<FoundIssue> evaluate();
+    List<FoundIssue> evaluate(KkdContext context);
 }
