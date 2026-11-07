@@ -1,5 +1,6 @@
 package com.example.kkd_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class KkdRun {
     @Column(name = "snapshot_date", nullable = false)
     private LocalDate snapshotDate;
 
+    @JsonIgnore
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 }
