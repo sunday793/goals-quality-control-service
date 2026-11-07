@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="insert-initial-data" author="sofia">
+
+        <!-- 1. Organizational units with hierarchy -->
+        <insert tableName="unit">
+            <column name="id" value="HQ"/>
+            <column name="name" value="Головной офис"/>
+        </insert>
+        <insert tableName="unit">
+            <column name="id" value="HQ-CIB"/>
+            <column name="name" value="Департамент корпоративного бизнеса"/>
+            <column name="parent_id" value="HQ"/>
+        </insert>
+        <insert tableName="unit">
+            <column name="id" value="HQ-CIB-RETAIL"/>
+            <column name="name" value="Отдел розничных продаж"/>
+            <column name="parent_id" value="HQ-CIB"/>
+        </insert>
+
+        <!-- 2. Goals (24 total) -->
+        <!-- Goals 1-6: Corporate Business Department (HQ-CIB) -->
+
+        <!-- Goal 1: perfect (has owner, has parent) -->
+        <insert tableName="goal">
+            <column name="id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="owner_id" value="user1"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goal 2: no owner (GOAL_NO_OWNER) -->
+        <insert tableName="goal">
+            <column name="id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goal 3: no owner (GOAL_NO_OWNER) -->
+        <insert tableName="goal">
+            <column name="id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="owner_id" value="NULL"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goal 4: no parent (CASCADE_NO_PARENT) -->
+        <insert tableName="goal">
+            <column name="id" value="44444444-4444-4444-4444-444444444444"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="owner_id" value="user4"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goal 5: no parent (CASCADE_NO_PARENT) -->
+        <insert tableName="goal">
+            <column name="id" value="55555555-5555-5555-5555-555555555555"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="owner_id" value="user5"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goal 6: normal, has parent -->
+        <insert tableName="goal">
+            <column name="id" value="66666666-6666-6666-6666-666666666666"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="owner_id" value="user6"/>
+            <column name="parent_goal_id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+
+        <!-- Goals 7-14: Retail Sales Department (HQ-CIB-RETAIL) -->
+
+        <!-- Goal 7: normal -->
+        <insert tableName="goal">
+            <column name="id" value="77777777-7777-7777-7777-777777777777"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="owner_id" value="user7"/>
+            <column name="parent_goal_id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goal 8: no owner (was fixed in RUN-008 - resolved) -->
+        <insert tableName="goal">
+            <column name="id" value="88888888-8888-8888-8888-888888888888"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goal 9: no parent (CASCADE_NO_PARENT) -->
+        <insert tableName="goal">
+            <column name="id" value="99999999-9999-9999-9999-999999999999"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="owner_id" value="user9"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <!-- Goals 10-14: normal goals to fill the dataset -->
+        <insert tableName="goal">
+            <column name="id" value="a0000000-0000-0000-0000-000000000001"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="owner_id" value="user10"/>
+            <column name="parent_goal_id" value="66666666-6666-6666-6666-666666666666"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="a0000000-0000-0000-0000-000000000002"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="owner_id" value="user11"/>
+            <column name="parent_goal_id" value="66666666-6666-6666-6666-666666666666"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="a0000000-0000-0000-0000-000000000003"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="owner_id" value="user12"/>
+            <column name="parent_goal_id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="a0000000-0000-0000-0000-000000000004"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="owner_id" value="user13"/>
+            <column name="parent_goal_id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="a0000000-0000-0000-0000-000000000005"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="owner_id" value="user14"/>
+            <column name="parent_goal_id" value="66666666-6666-6666-6666-666666666666"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+
+        <!-- Goals 15-24: Head Office (HQ) -->
+
+        <!-- Goal 15: no owner (GOAL_NO_OWNER) -->
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000001"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user15"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000002"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user16"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000003"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000004"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user18"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000005"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user19"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000006"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user20"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000007"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user21"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000008"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user22"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000009"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user23"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+        <insert tableName="goal">
+            <column name="id" value="b0000000-0000-0000-0000-000000000010"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="owner_id" value="user24"/>
+            <column name="status" value="active"/>
+            <column name="due_date" valueDate="2026-12-31"/>
+        </insert>
+
+        <!-- 3. Key Results -->
+
+        <!-- Goal 1: correct KR (weight 100, fresh fact) -->
+        <insert tableName="key_result">
+            <column name="id" value="c0000000-0000-0000-0000-000000000001"/>
+            <column name="goal_id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="target_value" valueNumeric="100"/>
+            <column name="actual_value" valueNumeric="50"/>
+            <column name="weight" valueNumeric="100"/>
+            <column name="fact_updated_at" valueDate="2026-11-01T12:00:00"/>
+        </insert>
+
+        <!-- Goal 2: sum of weights != 100 (40 + 50 = 90) -->
+        <insert tableName="key_result">
+            <column name="id" value="c0000000-0000-0000-0000-000000000002"/>
+            <column name="goal_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="target_value" valueNumeric="100"/>
+            <column name="actual_value" valueNumeric="50"/>
+            <column name="weight" valueNumeric="40"/>
+            <column name="fact_updated_at" valueDate="2026-11-01T12:00:00"/>
+        </insert>
+        <insert tableName="key_result">
+            <column name="id" value="c0000000-0000-0000-0000-000000000003"/>
+            <column name="goal_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="target_value" valueNumeric="100"/>
+            <column name="actual_value" valueNumeric="50"/>
+            <column name="weight" valueNumeric="50"/>
+            <column name="fact_updated_at" valueDate="2026-11-01T12:00:00"/>
+        </insert>
+
+        <!-- Goal 3: stale fact (KR_STALE_PROGRESS) -->
+        <insert tableName="key_result">
+            <column name="id" value="c0000000-0000-0000-0000-000000000004"/>
+            <column name="goal_id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="target_value" valueNumeric="100"/>
+            <column name="actual_value" valueNumeric="50"/>
+            <column name="weight" valueNumeric="100"/>
+            <column name="fact_updated_at" valueDate="2026-09-01T12:00:00"/>
+        </insert>
+
+        <!-- Goal 4: correct KR -->
+        <insert tableName="key_result">
+            <column name="id" value="c0000000-0000-0000-0000-000000000005"/>
+            <column name="goal_id" value="44444444-4444-4444-4444-444444444444"/>
+            <column name="target_value" valueNumeric="100"/>
+            <column name="actual_value" valueNumeric="50"/>
+            <column name="weight" valueNumeric="100"/>
+            <column name="fact_updated_at" valueDate="2026-11-01T12:00:00"/>
+        </insert>
+
+        <!-- Goal 7: correct KR -->
+        <insert tableName="key_result">
+            <column name="id" value="c0000000-0000-0000-0000-000000000006"/>
+            <column name="goal_id" value="77777777-7777-7777-7777-777777777777"/>
+            <column name="target_value" valueNumeric="100"/>
+            <column name="actual_value" valueNumeric="50"/>
+            <column name="weight" valueNumeric="100"/>
+            <column name="fact_updated_at" valueDate="2026-11-01T12:00:00"/>
+        </insert>
+
+        <!-- 4. KKD rules directory -->
+        <insert tableName="kkd_rule">
+            <column name="code" value="GOAL_NO_OWNER"/>
+            <column name="title" value="Цель без ответственного"/>
+            <column name="severity" value="critical"/>
+        </insert>
+        <insert tableName="kkd_rule">
+            <column name="code" value="KR_WEIGHTS_SUM"/>
+            <column name="title" value="Сумма весов КР не равна 100%"/>
+            <column name="severity" value="critical"/>
+        </insert>
+        <insert tableName="kkd_rule">
+            <column name="code" value="CASCADE_NO_PARENT"/>
+            <column name="title" value="Цель не связана с целью вышестоящего уровня"/>
+            <column name="severity" value="major"/>
+        </insert>
+        <insert tableName="kkd_rule">
+            <column name="code" value="KR_STALE_PROGRESS"/>
+            <column name="title" value="Факт КР не обновлялся более 45 дней"/>
+            <column name="severity" value="minor"/>
+        </insert>
+
+        <!-- 5. KKD runs (two runs for delta comparison) -->
+        <insert tableName="kkd_run">
+            <column name="id" value="RUN-007"/>
+            <column name="snapshot_date" valueDate="2026-10-26"/>
+        </insert>
+        <insert tableName="kkd_run">
+            <column name="id" value="RUN-008"/>
+            <column name="snapshot_date" valueDate="2026-11-05"/>
+        </insert>
+
+        <!-- 6. Issues in RUN-007 (previous run) -->
+
+        <!-- GOAL_NO_OWNER for goal 2 (will persist in RUN-008) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-007"/>
+            <column name="rule_code" value="GOAL_NO_OWNER"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="severity" value="critical"/>
+        </insert>
+        <!-- KR_WEIGHTS_SUM for goal 2 (will persist in RUN-008) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-007"/>
+            <column name="rule_code" value="KR_WEIGHTS_SUM"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="kr_id" value="c0000000-0000-0000-0000-000000000002"/>
+            <column name="severity" value="critical"/>
+        </insert>
+        <!-- GOAL_NO_OWNER for goal 8 (will be resolved in RUN-008) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-007"/>
+            <column name="rule_code" value="GOAL_NO_OWNER"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="goal_id" value="88888888-8888-8888-8888-888888888888"/>
+            <column name="severity" value="critical"/>
+        </insert>
+
+        <!-- 7. Issues in RUN-008 (current run) -->
+
+        <!-- GOAL_NO_OWNER for goal 2 (persisting) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="GOAL_NO_OWNER"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="severity" value="critical"/>
+        </insert>
+        <!-- GOAL_NO_OWNER for goal 3 (new) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="GOAL_NO_OWNER"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="severity" value="critical"/>
+        </insert>
+        <!-- GOAL_NO_OWNER for goal 15 (new) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="GOAL_NO_OWNER"/>
+            <column name="unit_id" value="HQ"/>
+            <column name="goal_id" value="b0000000-0000-0000-0000-000000000003"/>
+            <column name="severity" value="critical"/>
+        </insert>
+
+        <!-- KR_WEIGHTS_SUM for goal 2 (persisting) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="KR_WEIGHTS_SUM"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="kr_id" value="c0000000-0000-0000-0000-000000000002"/>
+            <column name="severity" value="critical"/>
+        </insert>
+
+        <!-- KR_STALE_PROGRESS for goal 3 (new) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="KR_STALE_PROGRESS"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="kr_id" value="c0000000-0000-0000-0000-000000000004"/>
+            <column name="severity" value="minor"/>
+        </insert>
+
+        <!-- CASCADE_NO_PARENT for goal 4 (new) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="CASCADE_NO_PARENT"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="44444444-4444-4444-4444-444444444444"/>
+            <column name="severity" value="major"/>
+        </insert>
+        <!-- CASCADE_NO_PARENT for goal 5 (new) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="CASCADE_NO_PARENT"/>
+            <column name="unit_id" value="HQ-CIB"/>
+            <column name="goal_id" value="55555555-5555-5555-5555-555555555555"/>
+            <column name="severity" value="major"/>
+        </insert>
+        <!-- CASCADE_NO_PARENT for goal 9 (new) -->
+        <insert tableName="kkd_issue">
+            <column name="run_id" value="RUN-008"/>
+            <column name="rule_code" value="CASCADE_NO_PARENT"/>
+            <column name="unit_id" value="HQ-CIB-RETAIL"/>
+            <column name="goal_id" value="99999999-9999-9999-9999-999999999999"/>
+            <column name="severity" value="major"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="kkd_issue"/>
+            <delete tableName="kkd_run"/>
+            <delete tableName="kkd_rule"/>
+            <delete tableName="key_result"/>
+            <delete tableName="goal"/>
+            <delete tableName="unit"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

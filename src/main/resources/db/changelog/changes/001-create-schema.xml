@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="1-create-unit" author="sofia">
+        <createTable tableName="unit">
+            <column name="id" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="varchar(50)">
+                <constraints foreignKeyName="fk_unit_parent" referencedTableName="unit" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="unit"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2-create-goal" author="sofia">
+        <createTable tableName="goal">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="unit_id" type="varchar(50)">
+                <constraints nullable="false" foreignKeyName="fk_goal_unit" referencedTableName="unit" referencedColumnNames="id"/>
+            </column>
+            <column name="owner_id" type="varchar(100)"/>
+            <column name="parent_goal_id" type="uuid">
+                <constraints foreignKeyName="fk_goal_parent" referencedTableName="goal" referencedColumnNames="id"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="due_date" type="date"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="goal"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3-create-key_result" author="sofia">
+        <createTable tableName="key_result">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="goal_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_kr_goal" referencedTableName="goal" referencedColumnNames="id"/>
+            </column>
+            <column name="target_value" type="numeric(10,2)"/>
+            <column name="actual_value" type="numeric(10,2)"/>
+            <column name="weight" type="numeric(5,2)"/>
+            <column name="fact_updated_at" type="timestamp"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="key_result"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="4-create-kkd_rule" author="sofia">
+        <createTable tableName="kkd_rule">
+            <column name="code" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)"/>
+            <column name="severity" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="kkd_rule"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="5-create-kkd_run" author="sofia">
+        <createTable tableName="kkd_run">
+            <column name="id" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="snapshot_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="kkd_run"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="6-create-kkd_issue" author="sofia">
+        <createTable tableName="kkd_issue">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="run_id" type="varchar(50)">
+                <constraints nullable="false" foreignKeyName="fk_issue_run" referencedTableName="kkd_run" referencedColumnNames="id"/>
+            </column>
+            <column name="rule_code" type="varchar(50)">
+                <constraints nullable="false" foreignKeyName="fk_issue_rule" referencedTableName="kkd_rule" referencedColumnNames="code"/>
+            </column>
+            <column name="unit_id" type="varchar(50)">
+                <constraints nullable="false" foreignKeyName="fk_issue_unit" referencedTableName="unit" referencedColumnNames="id"/>
+            </column>
+            <column name="goal_id" type="uuid">
+                <constraints foreignKeyName="fk_issue_goal" referencedTableName="goal" referencedColumnNames="id"/>
+            </column>
+            <column name="kr_id" type="uuid">
+                <constraints foreignKeyName="fk_issue_kr" referencedTableName="key_result" referencedColumnNames="id"/>
+            </column>
+            <column name="severity" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="kkd_issue"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
